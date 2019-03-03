@@ -27,7 +27,6 @@ import numpy as np
 
 # ========================= Models and Loss Functions ======================= #
 
-
 class GAN():
     def __init__(self, learning_rate, noise_dim, in_shape=(128, 128, 128, 1), out_shape=(64, 64, 64)):
         self.noise_dim = noise_dim
@@ -66,6 +65,12 @@ class GAN():
         model.add(Reshape(self.out_shape))
         print(model.summary())
 
+        # TODO: check this
+        noise = Input(shape=self.in_shape)
+        img = model(noise)
+
+        return Model(noise, img)
+
     def make_discriminator(self):
         model = Sequential()
         model.add(Conv3D(filters=64, kernel_size=4, strides=2,
@@ -86,15 +91,27 @@ class GAN():
         model.add(Dense(1, activation='sigmoid'))
         print(model.summary())
 
-        return model
+        # TODO: check this
+        img = Input(shape=self.out_shape)
+        validity = model(img)
+
+        return Model(img, validity)
 
     def generator_noise(self, n_samples, ndims, mu=0, sigma=0.2):
         # note: in paper is was 0 mean, 0.2 sigma
         return np.random.normal(mu, sigma, (n_samples, ndims))
 
-    # TODO: define loss (adversarial and generator)
-    # TODO:
+    def discriminator_loss(self, d_loss_real, d_loss_fake):
+        # d_loss_real = self.discriminator.train_on_batch(imgs, np.ones((half_batch, 1)))
+        # d_loss_fake = self.discriminator.train_on_batch(gen_imgs, np.zeros((half_batch, 1)))
+        # d_loss = 0.5 * np.add(d_loss_real, d_loss_fake)
 
+        # in the paper log D(xi) + log(1 − D(G(zt))).
+        return 0.5 * np.add(d_loss_real, d_loss_fake)
+
+    def generator_loss(self):
+        # in the paper log(1 − D(G(zt))) + ||G(E(yi)) − xi||2
+        return
 
 class VAEGAN(GAN):
 
