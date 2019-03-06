@@ -1,3 +1,5 @@
+from GAN_models.py import GAN, VAEGAN
+
 # =============================== Load Dataset ============================= #
 
 # Depending on what the data looks like, length/width/height should be adjusted
@@ -10,4 +12,8 @@
 
 # Normalize the data (not sure if necessary?)
 # Split into training, validation, and test sets
+
+# =============================== Initialize Model ============================= #
+basic_model = GAN()
+basic_model.train(x_train, epochs=, batch=, save=)
 
