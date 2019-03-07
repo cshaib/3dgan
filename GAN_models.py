@@ -15,7 +15,6 @@ import numpy as np
 # ========================= 3D GAN and VAE GAN Models ======================= #
 class GAN():
     def __init__(self, learning_rate, noise_dim, in_shape=(128, 128, 128, 1), out_shape=(64, 64, 64)):
-
         # basic attributes
         self.noise_dim = noise_dim
         self.learning_rate = learning_rate
@@ -23,7 +22,7 @@ class GAN():
         self.out_shape = out_shape
         self.optimizer = Adam(0.0002, 0.5)
 
-        # Random noise input to the generator
+        # random noise input for the generator
         z = Input(shape=(out_shape))
 
         # create the models, freeze the discriminator
@@ -110,8 +109,8 @@ class GAN():
     def train(self, x_train, epochs, batch, save):
 
         for e in range(epochs):
-            ### train discriminator ###
-            # select random half of training data
+            #--------- train discriminator ---------#
+
             np.random.shuffle(x_train)
             imgs = x_train[:batch//2]
 
@@ -123,15 +122,16 @@ class GAN():
             d_loss_fake = self.discriminator.train_on_batch(gen_imgs, np.zeros(batch//2, 1))
             d_loss = self.discriminator_loss(d_loss_real, d_loss_fake)
 
-            ### train generator ###
+            #--------- train generator ---------#
             noise = self.generator_noise(0, 1, (batch//2, self.out_shape))
             validity_y = np.array([1]*batch)
 
             g_loss = self.combined.train_on_batch(noise, validity_y)
 
             print("%d [Discriminator loss: %f, acc.: %.2f%%] [Generator loss: %f]" % (epoch, d_loss[0], 100*d_loss[1], g_loss))
-            if epoch % save == 0:
-                self.save(epoch)
+            # TODO:
+            # if epoch % save == 0:
+            #     self.save(epoch)
 
     def discriminator_loss(self, d_loss_real, d_loss_fake):
         # TODO: check this is correct, in the paper log D(xi) + log(1 − D(G(zt))).
