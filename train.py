@@ -2,19 +2,6 @@ from GAN_models.py import GAN, VAEGAN
 import argparse
 import numpy as np
 
-# =============================== Load Dataset ============================= #
-
-# Depending on what the data looks like, length/width/height should be adjusted
-# Assuming all augmentation and pre-processing steps are done
-# Training and testing splits remain the same
-
-# length =
-# width =
-# height ='
-
-# Normalize the data (not sure if necessary?)
-# Split into training, validation, and test sets
-
 # =============================== Parsing Cmd Arguments ============================= #
 parser = argparse.ArgumentParser(description='Training 3DGAN:')
 
@@ -28,16 +15,16 @@ parser.add_argument('--out_file', type=str, help='file to save model')
 args = parser.parse_args()
 # tmp_folder = './tmp/'
 
-# TODO: Save the model after training here?
-def train_model():
-    if (args.model == '3D_GAN'):
+def train_model(model, data, epochs, batch_size, out_file):
+    if (model == '3D_GAN'):
         basic_model = GAN()
-        basic_model.train(args.data, args.epochs, args.batch_size, args.out_file)
+        basic_model.train(data, epochs, batch_size, out_file)
     elif (args.model == '3D_VAE_GAN'):
         pass
 
 def main():
     assert (args.model == '3D_GAN' or args.model == '3D_VAE_GAN'), 'Invalid model'
+    train_model(args.model, args.data, args.epochs, args.batch_size, args.out_file)
     # TODO: save model
 
 if __name__ == '__main__':
