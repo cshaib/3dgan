@@ -106,7 +106,7 @@ class GAN():
         # note: in paper is was 0 mean, 0.2 sigma
         return np.random.normal(mu, sigma, (n_samples, ndims))
 
-    def train(self, x_train, epochs, batch, save):
+    def train(self, x_train, epochs, batch, save, output_file):
 
         for e in range(epochs):
 

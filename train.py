@@ -17,16 +17,16 @@ parser.add_argument('--out_file', type=str, help='file to save model')
 args = parser.parse_args()
 # tmp_folder = './tmp/'
 
-def train_model(model, data, epochs, batch_size, out_file, input_shape, output_shape):
+def train_model(model, data, epochs, batch_size, save, out_file, input_shape, output_shape):
     if (model == '3D_GAN'):
         basic_model = GAN(learning_rate=0.0001, noise_dim=input_shape, in_shape=input_shape, out_shape=output_shape)
-        basic_model.train(data, epochs, batch_size, out_file)
+        basic_model.train(data, epochs, batch_size, save, out_file)
     elif (args.model == '3D_VAE_GAN'):
         pass
 
 def main():
     assert (args.model == '3D_GAN' or args.model == '3D_VAE_GAN'), 'Invalid model'
-    train_model(args.model, args.data, args.epochs, args.batch_size, args.out_file, args.input_shape, args.output_shape)
+    train_model(args.model, args.data, args.epochs, args.batch_size, args.save_int, args.out_file, args.input_shape, args.output_shape)
     # TODO: save model
 
 if __name__ == '__main__':
