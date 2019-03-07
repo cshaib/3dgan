@@ -109,8 +109,8 @@ class GAN():
     def train(self, x_train, epochs, batch, save):
 
         for e in range(epochs):
-            #--------- train discriminator ---------#
 
+            #--------- train discriminator ---------#
             np.random.shuffle(x_train)
             imgs = x_train[:batch//2]
 
